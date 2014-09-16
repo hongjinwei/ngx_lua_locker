@@ -190,4 +190,10 @@ function locker.unlock(lock_dict, lock_name)
 end
 
 function locker.run_with_lock(lock_name, func)
+    while(not self.lock(lock_dict, lock_name, false)) do
+        self.lock(lock_dict, lock_name, false)
+    end
+    local result = func(...)
+    self.unlock(lock_dict, lock_name)
+    return result or false
 end
